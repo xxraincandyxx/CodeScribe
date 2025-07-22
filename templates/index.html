@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Code Extractor</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Project Code Extractor</h1>
+        <p>
+          Convert your project structure and code into a single markdown file
+          for AI prompts.
+        </p>
+      </header>
+
+      <main>
+        <div class="controls">
+          <div class="form-group">
+            <label for="project-path">Project Directory Path</label>
+            <input
+              type="text"
+              id="project-path"
+              placeholder="e.g., /Users/user/dev/my-awesome-project"
+            />
+          </div>
+          <div class="form-group">
+            <label for="ignore-patterns"
+              >Ignore Patterns (.gitignore style)</label
+            >
+            <textarea id="ignore-patterns" rows="8">
+# Version Control
+.git/
+.svn/
+
+# Dependencies
+node_modules/
+vendor/
+venv/
+.venv/
+
+# Build artifacts & Logs
+dist/
+build/
+*.log
+*.tmp
+
+# IDE / OS specific
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+.DS_Store
+                    </textarea
+            >
+          </div>
+          <div class="options">
+            <input type="checkbox" id="ignore-comments" />
+            <label for="ignore-comments"
+              >Omit comments from code (for conciseness)</label
+            >
+          </div>
+          <button id="extract-btn">Generate Markdown</button>
+        </div>
+
+        <div class="results">
+          <div id="status-bar" class="status-bar">
+            <div class="spinner" id="spinner"></div>
+            <span id="status-text">Waiting for instructions...</span>
+          </div>
+          <div class="output-header">
+            <h3>Generated Markdown</h3>
+            <button id="copy-btn" class="copy-btn" disabled>
+              Copy to Clipboard
+            </button>
+          </div>
+          <div class="output-container">
+            <pre><code id="output-markdown"></code></pre>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
