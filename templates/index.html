@@ -28,7 +28,9 @@
       <main>
         <div class="controls">
           <div class="form-group">
-            <label for="project-path">Project Root Directory</label>
+            <label for="project-path"
+              >Project Root Directory (Optional if using External Files)</label
+            >
             <input
               type="text"
               id="project-path"
@@ -36,19 +38,15 @@
             />
           </div>
 
-          <!-- NEW: Specific file/directory selection -->
           <div class="form-group">
             <label for="include-paths"
               >Specific Files/Directories to Include (Optional)</label
             >
             <textarea
               id="include-paths"
-              rows="5"
+              rows="4"
               placeholder="Leave empty to parse the whole project.
-Enter one path per line, relative to the root.
-e.g.,
-src/main.js
-components/"
+Enter one path per line, relative to the root."
             ></textarea>
           </div>
 
@@ -56,7 +54,7 @@ components/"
             <label for="ignore-patterns"
               >Ignore Patterns (.gitignore style)</label
             >
-            <textarea id="ignore-patterns" rows="8">
+            <textarea id="ignore-patterns" rows="6">
 # Version Control
 .git/
 .svn/
@@ -76,12 +74,22 @@ build/
 __pycache__/
 *.pyc
 .DS_Store
-                    </textarea
+</textarea
             >
           </div>
 
+          <!-- NEW: External Files Section -->
+          <div class="form-group">
+            <label>External Files</label>
+            <div id="external-files-list" class="external-files-container">
+              <!-- Dynamic entries will be added here -->
+            </div>
+            <button id="add-external-file-btn" class="btn-secondary">
+              Add External File
+            </button>
+          </div>
+
           <div class="options">
-            <!-- NEW: Max file size input -->
             <div class="form-group-inline">
               <label for="max-file-size">Max File Size (KB):</label>
               <input type="number" id="max-file-size" value="1024" min="1" />
@@ -92,11 +100,20 @@ __pycache__/
             </div>
           </div>
 
-          <button id="extract-btn">Generate Markdown</button>
+          <!-- NEW: Save/Load and Generate Buttons -->
+          <div class="action-buttons">
+            <button id="save-settings-btn" class="btn-secondary">
+              Save Settings
+            </button>
+            <button id="load-settings-btn" class="btn-secondary">
+              Load Settings
+            </button>
+            <button id="extract-btn">Generate Markdown</button>
+          </div>
+          <div id="settings-status" class="settings-status"></div>
         </div>
 
         <div class="results">
-          <!-- ... (this part remains unchanged) ... -->
           <div id="status-bar" class="status-bar">
             <div class="spinner" id="spinner"></div>
             <span id="status-text">Waiting for instructions...</span>
