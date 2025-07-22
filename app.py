@@ -3,38 +3,33 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 from core.extractor import ProjectExtractor
 
-# --- Flask App Initialization ---
 app = Flask(__name__)
-# In a real production app, you'd use a more secure secret key
 app.config["SECRET_KEY"] = "your-very-secret-key!"
 socketio = SocketIO(app)
 
 
-# --- Routes ---
 @app.route("/")
 def index():
-  """Serves the main HTML page."""
   return render_template("index.html")
 
 
-# --- Socket.IO Event Handlers ---
 @socketio.on("connect")
 def handle_connect():
-  """Handles a new client connection."""
   print("Client connected:", request.sid)
 
 
 @socketio.on("disconnect")
 def handle_disconnect():
-  """Handles a client disconnection."""
   print("Client disconnected:", request.sid)
 
 
 @socketio.on("start_extraction")
 def handle_extraction_request(data):
-  """Handles the request from the client to start the extraction."""
   project_path = data.get("path")
   ignore_patterns = data.get("ignores")
+  # NEW: Get additional parameters from the client
+  include_paths = data.get("includes", "")
+  max_size_kb = data.get("max_size", 1024)  # Default to 1MB
   ignore_comments = data.get("ignore_comments", False)
 
   sid = request.sid
@@ -47,15 +42,17 @@ def handle_extraction_request(data):
   try:
     emit("update_status", {"message": "Initializing extractor..."})
 
+    # NEW: Pass the new arguments to the extractor
     extractor = ProjectExtractor(
-      root_path=project_path, ignore_patterns_str=ignore_patterns, ignore_comments=ignore_comments
+      root_path=project_path,
+      ignore_patterns_str=ignore_patterns,
+      include_only_paths_str=include_paths,
+      max_file_size_kb=int(max_size_kb),
+      ignore_comments=ignore_comments,
     )
 
     emit("update_status", {"message": "Scanning project files and generating markdown..."})
 
-    # This can be a blocking call. For very large projects,
-    # you might consider running this in a separate thread or process.
-    # For this light tool, a direct call is acceptable.
     markdown_output = extractor.extract()
 
     print(f"[{sid}] Extraction successful. Sending markdown to client.")
@@ -66,9 +63,6 @@ def handle_extraction_request(data):
     emit("extraction_complete", {"error": f"An unexpected error occurred: {str(e)}"})
 
 
-# --- Main Entry Point ---
 if __name__ == "__main__":
   print("Starting Flask server with Socket.IO...")
-  # Using allow_unsafe_werkzeug=True for compatibility with newer Werkzeug versions
-  # In production, you'd use a proper WSGI server like Gunicorn or uWSGI.
   socketio.run(app, debug=True, allow_unsafe_werkzeug=True)

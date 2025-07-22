@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Code Extractor</title>
+    <title>CodeScribe - Project Extractor</title>
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='css/style.css') }}"
@@ -18,7 +18,7 @@
   <body>
     <div class="container">
       <header>
-        <h1>Project Code Extractor</h1>
+        <h1>CodeScribe</h1>
         <p>
           Convert your project structure and code into a single markdown file
           for AI prompts.
@@ -28,13 +28,30 @@
       <main>
         <div class="controls">
           <div class="form-group">
-            <label for="project-path">Project Directory Path</label>
+            <label for="project-path">Project Root Directory</label>
             <input
               type="text"
               id="project-path"
-              placeholder="e.g., /Users/user/dev/my-awesome-project"
+              placeholder="e.g., /Users/user/dev/my-project"
             />
           </div>
+
+          <!-- NEW: Specific file/directory selection -->
+          <div class="form-group">
+            <label for="include-paths"
+              >Specific Files/Directories to Include (Optional)</label
+            >
+            <textarea
+              id="include-paths"
+              rows="5"
+              placeholder="Leave empty to parse the whole project.
+Enter one path per line, relative to the root.
+e.g.,
+src/main.js
+components/"
+            ></textarea>
+          </div>
+
           <div class="form-group">
             <label for="ignore-patterns"
               >Ignore Patterns (.gitignore style)</label
@@ -43,19 +60,16 @@
 # Version Control
 .git/
 .svn/
-
 # Dependencies
 node_modules/
 vendor/
 venv/
 .venv/
-
 # Build artifacts & Logs
 dist/
 build/
 *.log
 *.tmp
-
 # IDE / OS specific
 .idea/
 .vscode/
@@ -65,16 +79,24 @@ __pycache__/
                     </textarea
             >
           </div>
+
           <div class="options">
-            <input type="checkbox" id="ignore-comments" />
-            <label for="ignore-comments"
-              >Omit comments from code (for conciseness)</label
-            >
+            <!-- NEW: Max file size input -->
+            <div class="form-group-inline">
+              <label for="max-file-size">Max File Size (KB):</label>
+              <input type="number" id="max-file-size" value="1024" min="1" />
+            </div>
+            <div class="form-group-inline">
+              <input type="checkbox" id="ignore-comments" />
+              <label for="ignore-comments">Omit comments</label>
+            </div>
           </div>
+
           <button id="extract-btn">Generate Markdown</button>
         </div>
 
         <div class="results">
+          <!-- ... (this part remains unchanged) ... -->
           <div id="status-bar" class="status-bar">
             <div class="spinner" id="spinner"></div>
             <span id="status-text">Waiting for instructions...</span>

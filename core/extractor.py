@@ -3,20 +3,17 @@ import re
 from pathlib import Path
 import pathspec
 
+
 # --- Comment Removal Logic (Extensible) ---
-
-
+# ... (This part remains unchanged)
 def _remove_python_comments(content):
-  # Remove single-line comments
   content = re.sub(r"#.*", "", content)
-  # Remove multi-line string comments (docstrings) - basic version
   content = re.sub(r"\"\"\"[\s\S]*?\"\"\"", "", content)
   content = re.sub(r"'''[\s\S]*?'''", "", content)
   return content
 
 
 def _remove_c_style_comments(content):
-  # Remove single-line // comments and multi-line /* ... */ comments
   content = re.sub(r"//.*", "", content)
   content = re.sub(r"/\*[\s\S]*?\*/", "", content)
   return content
@@ -39,7 +36,7 @@ COMMENT_REMOVERS = {
 }
 
 # --- Language Mapping for Markdown ---
-
+# ... (This part remains unchanged)
 LANGUAGE_MAP = {
   ".py": "python",
   ".js": "javascript",
@@ -60,30 +57,62 @@ LANGUAGE_MAP = {
   ".sql": "sql",
   ".go": "go",
   ".rs": "rust",
-  "default": "",  # For unknown file types
+  "default": "",
 }
 
 # --- Main Extraction Logic ---
 
 
 class ProjectExtractor:
-  def __init__(self, root_path, ignore_patterns_str, ignore_comments=False):
+  def __init__(self, root_path, ignore_patterns_str, include_only_paths_str, max_file_size_kb, ignore_comments=False):
     self.root_path = Path(root_path).resolve()
     self.ignore_comments = ignore_comments
+    self.max_file_size_bytes = max_file_size_kb * 1024
 
-    # Create a pathspec object from .gitignore-style patterns
+    # Parse .gitignore style patterns for ignoring files
     ignore_lines = [p.strip() for p in ignore_patterns_str.splitlines() if p.strip()]
     self.spec = pathspec.PathSpec.from_lines("gitwildmatch", ignore_lines)
 
-  def _get_files_to_include(self):
-    """Walks the directory and yields files that are not ignored."""
-    all_files = []
-    for p in self.root_path.rglob("*"):
-      # Path relative to the root, needed for pathspec matching
-      relative_path = p.relative_to(self.root_path)
-      if not self.spec.match_file(str(relative_path)):
-        all_files.append(p)
-    return all_files
+    # Parse user-specified paths to include
+    self.include_only_paths = [p.strip() for p in include_only_paths_str.splitlines() if p.strip()]
+
+  def _get_files_to_process(self):
+    """
+    Determines the final list of files to be processed based on include/ignore rules.
+    """
+    initial_file_set = set()
+
+    if not self.include_only_paths:
+      # Mode 1: Scan the entire project directory
+      for p in self.root_path.rglob("*"):
+        initial_file_set.add(p)
+    else:
+      # Mode 2: Scan only specified files/directories
+      for rel_path in self.include_only_paths:
+        full_path = self.root_path / rel_path
+        if not full_path.exists():
+          # You might want to log this or notify the user
+          print(f"Warning: Specified include path does not exist: {full_path}")
+          continue
+        if full_path.is_file():
+          initial_file_set.add(full_path)
+        elif full_path.is_dir():
+          for p in full_path.rglob("*"):
+            initial_file_set.add(p)
+
+    # Filter the collected files using the ignore spec
+    final_files = []
+    for p in initial_file_set:
+      # Path relative to the root is needed for pathspec matching
+      try:
+        relative_path = p.relative_to(self.root_path)
+        if not self.spec.match_file(str(relative_path)):
+          final_files.append(p)
+      except ValueError:
+        # This can happen if a path is outside the root, though our logic should prevent it.
+        continue
+
+    return [f for f in final_files if f.is_file()]
 
   def _generate_file_tree(self, file_paths):
     """Generates a string representation of the file tree."""
@@ -113,44 +142,53 @@ class ProjectExtractor:
       lines.append(f"{prefix}{connector}{name}")
       if isinstance(tree[name], dict):  # It's a directory
         extension = "    " if i == len(entries) - 1 else "│   "
-        lines.extend(self._build_tree_string(tree[name], prefix + extension))
+        # *** BUG FIX IS HERE: Changed extend to append ***
+        # extend() was iterating over the string, adding char by char.
+        # append() adds the entire multi-line string as one element.
+        lines.append(self._build_tree_string(tree[name], prefix + extension))
     return "\n".join(lines)
 
   def extract(self):
     """Main method to generate the full markdown output."""
     if not self.root_path.is_dir():
-      raise ValueError(f"Error: Provided path '{self.root_path}' is not a valid directory.")
+      raise ValueError(f"Error: Provided root path '{self.root_path}' is not a valid directory.")
 
-    files_to_process = [f for f in self._get_files_to_include() if f.is_file()]
+    files_to_process = self._get_files_to_process()
 
-    # 1. Generate the file structure tree
     tree_string = self._generate_file_tree(files_to_process)
 
-    # 2. Generate content for each file
     markdown_parts = [tree_string]
 
     for file_path in sorted(files_to_process):
       relative_path = file_path.relative_to(self.root_path)
 
+      # Check file size before reading
+      try:
+        file_size = file_path.stat().st_size
+        if file_size > self.max_file_size_bytes:
+          markdown_parts.append(
+            f"---\n**File:** `{relative_path}`\n\n```\n[File skipped: Exceeds size limit of {self.max_file_size_bytes / 1024} KB]\n```\n"
+          )
+          continue
+      except FileNotFoundError:
+        # File might have been deleted during the process
+        continue
+
       try:
         with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
           content = f.read()
 
-        # Optional: Remove comments
         if self.ignore_comments:
           remover = COMMENT_REMOVERS.get(file_path.suffix)
           if remover:
             content = remover(content)
 
-        # Clean up excessive newlines after comment removal
         content = re.sub(r"\n\s*\n", "\n\n", content).strip()
-
         lang_tag = LANGUAGE_MAP.get(file_path.suffix, LANGUAGE_MAP["default"])
 
         markdown_parts.append(f"---\n**File:** `{relative_path}`\n\n```{lang_tag}\n{content}\n```\n")
 
       except Exception as e:
-        # Handle binary files or read errors gracefully
         markdown_parts.append(f"---\n**File:** `{relative_path}`\n\n```\n[Error reading file: {e}]\n```\n")
 
     return "\n".join(markdown_parts)

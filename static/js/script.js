@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusText = document.getElementById('status-text');
   const spinner = document.getElementById('spinner');
   const outputMarkdown = document.getElementById('output-markdown');
+  const includePathsTextarea = document.getElementById('include-paths');
+  const maxFileSizeInput = document.getElementById('max-file-size');
 
   // --- UI State Management ---
   function setUIState(isWorking) {
@@ -69,6 +71,8 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.emit('start_extraction', {
       path: path,
       ignores: ignorePatternsTextarea.value,
+      includes: includePathsTextarea.value, // New
+      max_size: parseInt(maxFileSizeInput.value, 10) || 1024, // New
       ignore_comments: ignoreCommentsCheckbox.checked,
     });
   });
