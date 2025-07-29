@@ -5,7 +5,6 @@ import pathspec
 
 
 # --- Comment Removal Logic (Extensible) ---
-# ... (This part remains unchanged)
 def _remove_python_comments(content):
   content = re.sub(r"#.*", "", content)
   content = re.sub(r"\"\"\"[\s\S]*?\"\"\"", "", content)
@@ -36,7 +35,6 @@ COMMENT_REMOVERS = {
 }
 
 # --- Language Mapping for Markdown ---
-# ... (This part remains unchanged)
 LANGUAGE_MAP = {
   ".py": "python",
   ".js": "javascript",

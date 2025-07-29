@@ -54,7 +54,7 @@ def handle_extraction_request(data):
       include_only_paths_str=include_paths,
       max_file_size_kb=int(max_size_kb),
       ignore_comments=ignore_comments,
-      external_files_data=external_files,  # NEW
+      external_files_data=external_files,
     )
 
     emit("update_status", {"message": "Scanning project files and generating markdown..."})
