@@ -5,6 +5,7 @@ This module sets up a Flask-SocketIO server to handle real-time communication
 for the project extraction process. It is designed to be a pure backend API,
 handling requests from a separate frontend application.
 """
+
 import os
 from flask import Flask, request
 from flask_socketio import SocketIO, emit
@@ -26,15 +27,18 @@ socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
 
 # --- Socket.IO Event Handlers ---
 
+
 @socketio.on("connect")
 def handle_connect():
   """Handles a new client connection."""
   print(f"Client connected: {request.sid}")
 
+
 @socketio.on("disconnect")
 def handle_disconnect():
   """Handles a client disconnection."""
   print(f"Client disconnected: {request.sid}")
+
 
 @socketio.on("start_extraction")
 def handle_extraction_request(data: dict):
@@ -53,16 +57,16 @@ def handle_extraction_request(data: dict):
     # Validate input: either project_path or external_files must be present.
     if not project_path and not data.get("external_files"):
       emit(
-          "extraction_complete",
-          {"error": "Provide a project directory or at least one external file."},
+        "extraction_complete",
+        {"error": "Provide a project directory or at least one external file."},
       )
       return
 
     # Validate directory path if provided.
     if project_path and not os.path.isdir(project_path):
       emit(
-          "extraction_complete",
-          {"error": f"Invalid directory path: '{project_path}'."},
+        "extraction_complete",
+        {"error": f"Invalid directory path: '{project_path}'."},
       )
       return
 
@@ -70,12 +74,12 @@ def handle_extraction_request(data: dict):
 
     # Instantiate the extractor with parameters from the client.
     extractor = ProjectExtractor(
-        root_path=project_path,
-        ignore_patterns_str=data.get("ignores", ""),
-        include_only_paths_str=data.get("includes", ""),
-        max_file_size_kb=int(data.get("max_size", 1024)),
-        ignore_comments=bool(data.get("ignore_comments", False)),
-        external_files_data=data.get("external_files", []),
+      root_path=project_path,
+      ignore_patterns_str=data.get("ignores", ""),
+      include_only_paths_str=data.get("includes", ""),
+      max_file_size_kb=int(data.get("max_size", 1024)),
+      ignore_comments=bool(data.get("ignore_comments", False)),
+      external_files_data=data.get("external_files", []),
     )
 
     emit("update_status", {"message": "Scanning project and generating markdown..."})
@@ -86,6 +90,7 @@ def handle_extraction_request(data: dict):
   except Exception as e:
     print(f"[{sid}] An error occurred during extraction: {e}")
     emit("extraction_complete", {"error": f"An unexpected error occurred: {str(e)}"})
+
 
 # --- Main Execution ---
 if __name__ == "__main__":

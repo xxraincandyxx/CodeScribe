@@ -5,6 +5,7 @@ This module contains the ProjectExtractor class, which is responsible for
 traversing a project directory, applying include/ignore rules, reading file
 contents, and formatting the output as a single markdown string.
 """
+
 import os
 import re
 from pathlib import Path
@@ -16,23 +17,41 @@ import pathspec
 
 # Maps file extensions to their corresponding comment removal functions.
 COMMENT_REMOVERS = {
-    ".py": lambda c: re.sub(r"(\"\"\"[\s\S]*?\"\"\"|'''[\s\S]*?'''|#.*)", "", c),
-    ".js": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
-    ".jsx": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
-    ".ts": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
-    ".tsx": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
-    ".html": lambda c: re.sub(r"<!--[\s\S]*?-->", "", c),
-    ".css": lambda c: re.sub(r"/\*[\s\S]*?\*/", "", c),
-    # Add other languages as needed
+  ".py": lambda c: re.sub(r"(\"\"\"[\s\S]*?\"\"\"|'''[\s\S]*?'''|#.*)", "", c),
+  ".js": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
+  ".jsx": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
+  ".ts": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
+  ".tsx": lambda c: re.sub(r"(/\*[\s\S]*?\*/|//.*)", "", c),
+  ".html": lambda c: re.sub(r"<!--[\s\S]*?-->", "", c),
+  ".css": lambda c: re.sub(r"/\*[\s\S]*?\*/", "", c),
+  # Add other languages as needed
 }
 
 # Maps file extensions to markdown language tags for code blocks.
 LANGUAGE_MAP = {
-    ".py": "python", ".js": "javascript", ".jsx": "jsx", ".ts": "typescript",
-    ".tsx": "tsx", ".html": "html", ".css": "css", ".c": "c", ".cpp": "cpp",
-    ".h": "c", ".hpp": "cpp", ".java": "java", ".sh": "shell", ".rb": "ruby",
-    ".md": "markdown", ".json": "json", ".xml": "xml", ".yaml": "yaml",
-    ".yml": "yaml", ".sql": "sql", ".go": "go", ".rs": "rust", "default": "",
+  ".py": "python",
+  ".js": "javascript",
+  ".jsx": "jsx",
+  ".ts": "typescript",
+  ".tsx": "tsx",
+  ".html": "html",
+  ".css": "css",
+  ".c": "c",
+  ".cpp": "cpp",
+  ".h": "c",
+  ".hpp": "cpp",
+  ".java": "java",
+  ".sh": "shell",
+  ".rb": "ruby",
+  ".md": "markdown",
+  ".json": "json",
+  ".xml": "xml",
+  ".yaml": "yaml",
+  ".yml": "yaml",
+  ".sql": "sql",
+  ".go": "go",
+  ".rs": "rust",
+  "default": "",
 }
 
 
@@ -42,13 +61,13 @@ class ProjectExtractor:
   """
 
   def __init__(
-      self,
-      root_path: str,
-      ignore_patterns_str: str,
-      include_only_paths_str: str,
-      max_file_size_kb: int,
-      ignore_comments: bool = False,
-      external_files_data: Optional[List[Dict[str, str]]] = None,
+    self,
+    root_path: str,
+    ignore_patterns_str: str,
+    include_only_paths_str: str,
+    max_file_size_kb: int,
+    ignore_comments: bool = False,
+    external_files_data: Optional[List[Dict[str, str]]] = None,
   ):
     """
     Initializes the ProjectExtractor.
@@ -69,9 +88,7 @@ class ProjectExtractor:
     ignore_lines = [p.strip() for p in ignore_patterns_str.splitlines() if p.strip()]
     self.spec = pathspec.PathSpec.from_lines("gitwildmatch", ignore_lines)
 
-    self.include_only_paths = [
-        p.strip() for p in include_only_paths_str.splitlines() if p.strip()
-    ]
+    self.include_only_paths = [p.strip() for p in include_only_paths_str.splitlines() if p.strip()]
 
   def _get_files_to_process(self) -> List[Path]:
     """
@@ -103,11 +120,7 @@ class ProjectExtractor:
             initial_file_set.add(p)
 
     # Filter the collected files using the ignore spec
-    final_files = [
-        p
-        for p in initial_file_set
-        if not self.spec.match_file(str(p.relative_to(self.root_path)))
-    ]
+    final_files = [p for p in initial_file_set if not self.spec.match_file(str(p.relative_to(self.root_path)))]
 
     return sorted([f for f in final_files if f.is_file()])
 
