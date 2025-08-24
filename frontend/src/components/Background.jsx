@@ -24,7 +24,7 @@ function Stars(props) {
     ref.current.rotation.x -= delta / 10;
     ref.current.rotation.y -= delta / 15;
     // Follow mouse
-    const { x, y } = state.mouse;
+    const { x, y } = state.pointer;
     ref.current.rotation.y += x * 0.01;
     ref.current.rotation.x += y * 0.01;
   });

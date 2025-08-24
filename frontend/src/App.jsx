@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { io } from 'socket.io-client';
 import styles from './App.module.css';
+import './App.scss';
 import Controls from './components/Controls.jsx';
 import Results from './components/Results.jsx';
 import Background from './components/Background.jsx';
+import Layout from './layouts';
 
 const SOCKET_URL = 'http://localhost:5000';
 const SETTINGS_KEY = 'codeScribeSettings_v2';
@@ -29,6 +31,9 @@ __pycache__/
 .DS_Store`;
 
 function App() {
+  // --- Test for Background Effect ---
+  return <Layout />;
+
   // --- State Management ---
   const [projectPath, setProjectPath] = useState('');
   const [includePaths, setIncludePaths] = useState('');
