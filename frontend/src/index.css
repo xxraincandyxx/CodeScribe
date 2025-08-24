@@ -1,0 +1,56 @@
+:root {
+  --font-sans: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --bg-color: #1a1b26;
+  --fg-color: #c0caf5;
+  --card-bg: rgba(36, 40, 59, 0.6);
+  --border-color: rgba(65, 72, 104, 0.7);
+  --input-bg: rgba(45, 49, 74, 0.8);
+  --button-bg: #7aa2f7;
+  --button-text: #1a1b26;
+  --button-hover-bg: #9abdf5;
+  --button-secondary-bg: #414868;
+  --button-secondary-hover-bg: #565f89;
+  --accent-color: #bb9af7;
+  --error-color: #f7768e;
+  --success-color: #9ece6a;
+  --warning-color: #e0af68;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+  line-height: 1.6;
+  overflow: hidden; /* Prevent scrollbars from main page */
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--button-secondary-bg);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--button-secondary-hover-bg);
+}

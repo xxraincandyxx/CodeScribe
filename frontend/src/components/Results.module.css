@@ -1,0 +1,94 @@
+.resultsCard {
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  min-height: 0; /* Important for child flexbox scrolling */
+}
+
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.statusText {
+  font-weight: 500;
+}
+.statusText.info {
+  color: var(--fg-color);
+}
+.statusText.success {
+  color: var(--success-color);
+}
+.statusText.error {
+  color: var(--error-color);
+}
+.statusText.warning {
+  color: var(--warning-color);
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.outputHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.copyBtn {
+  background-color: transparent;
+  color: var(--button-bg);
+  border: 1px solid var(--button-bg);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.copyBtn:hover {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+.copyBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.outputContainer {
+  flex-grow: 1;
+  overflow: auto;
+  padding: 1.5rem;
+  min-height: 0; /* Child of flex container needs this for scroll */
+}
+
+.outputContainer pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #a9b1d6;
+}
