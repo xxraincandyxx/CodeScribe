@@ -11,7 +11,7 @@ import Results from './components/Results.jsx';
 
 // Import our new legacy wrapper and the starfield
 import StarfieldBackground from './components/StarfieldBackground';
-import LegacyParticleBackground from './components/LegacyParticleBackground';
+import LegacyParticleBackground from './components/LegacyParticleBackground.tsx';
 
 // import Layout from './layouts';
 
@@ -185,16 +185,16 @@ function App() {
     });
   };
 
-  return (
-    <>
-      {/* Conditionally render the selected background */}
-      {backgroundType === 'stars' ? (
-        <StarfieldBackground />
-      ) : (
-        <LegacyParticleBackground />
-      )}
-    </>
-  );
+  // return (
+  //   <>
+  //     {/* Conditionally render the selected background */}
+  //     {backgroundType === 'stars' ? (
+  //       <StarfieldBackground />
+  //     ) : (
+  //       <LegacyParticleBackground />
+  //     )}
+  //   </>
+  // );
 
   return (
     <>

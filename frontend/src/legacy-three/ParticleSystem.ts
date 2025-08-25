@@ -15,10 +15,10 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { throttle } from 'lodash';
 
 import g from '@/assets/images/gradient.png';
-import { ParticleModelProps, TWEEN_POINT } from '@/declare/legacy-three';
+import { ParticleModelProps, TWEEN_POINT } from '@/legacy-three/declare/legacy-three';
 import VerticesDuplicateRemove from '@/legacy-three/utils/VerticesDuplicateRemove.js';
-import BuiltinShaderAttributeName from '@/constant/legacy-three/BuiltinShaderAttributeName';
-import { addonsBasic } from '@/declare/legacy-three/addons';
+import BuiltinShaderAttributeName from '@/legacy-three/constant/legacy-three/BuiltinShaderAttributeName';
+import { addonsBasic } from '@/legacy-three/declare/legacy-three/addons';
 
 function getRangeRandom(e: number, t: number) {
   return Math.random() * (t - e) + e;
@@ -384,6 +384,7 @@ class ParticleSystem {
    * @param {number?} time 动画时间长度，默认 `1500ms`
    */
   ChangeModel(name: string, time: number = this.AnimateDuration) {
+    console.log('ChangeModel() triggered with model name: ' + name.toString());
     const item = this.modelList.get(name);
 
     if (item == null) {
@@ -396,15 +397,22 @@ class ParticleSystem {
     if (this.CurrentUseModelName !== undefined)
       this.LastUseModelName = this.CurrentUseModelName;
     this.CurrentUseModelName = name;
+    console.log(
+      'ChangeModel(): Current used model name - ' +
+        this.CurrentUseModelName.toString()
+    );
+
     /** 模型切换开始的钩子 */
     itemHook!.onEnterStart?.call(this, this.AnimateEffectParticle!);
     const targetModel = item.getAttribute('position');
+
     // !使用断言
     const sourceModel =
       this.AnimateEffectParticle!.geometry.getAttribute('position');
     const TimerId = setTimeout(() => {
       itemHook!.onEnterEnd?.call(this, this.AnimateEffectParticle!);
     }, time * 2);
+
     // 停止当前所有动画
     for (let i = 0; i < this.maxParticlesCount; i++) {
       const p = this.ParticleAnimeMap[i];
@@ -433,6 +441,7 @@ class ParticleSystem {
         })
         .start();
     }
+
     // 触发 addons 的钩子
     this.addons?.forEach((val) => {
       val.ChangeModel?.call(this);

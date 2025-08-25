@@ -19,8 +19,8 @@
     "paths": {
       "@/*":["src/*"],
       "@components/*": ["src/components/*"],
-      "@constant/*": ["src/constant/*"],
-      "@declare/*": ["src/declare/*"],
+      "@constant/*": ["src/legacy-three/constant/*"],
+      "@declare/*": ["src/legacy-three/declare/*"],
       "@THREE/*": ["src/legacy-three/*"]
     }
   },
