@@ -5,12 +5,13 @@ import './App.scss';
 import Controls from './components/Controls.jsx';
 import Results from './components/Results.jsx';
 // Backgrounds
-import Background from './components/StarfieldBackground.jsx';
+import StarfieldBackground from './components/StarfieldBackground.jsx';
 import ParticleSystemBackground from './components/ParticleSystemBackground.jsx';
 
 // import Layout from './layouts';
 
-const SOCKET_URL = 'http://localhost:5000';
+const SOCKET_URL = 'http://localhost:5172';
+const SECRET_KEY = 'code-scribe-secret-eky';
 const SETTINGS_KEY = 'codeScribeSettings_v2';
 
 const defaultIgnorePatterns = `# Version Control
@@ -53,13 +54,17 @@ function App() {
 
   const [isWorking, setIsWorking] = useState(false);
   // State for managing the background type
-  const [backgroundType, setBackgroundType] = useState('particles'); // 'stars' or 'particles'
+  const [backgroundType, setBackgroundType] = useState('stars'); // 'stars' or 'particles'
 
   const socketRef = useRef(null);
 
   // --- Socket.IO Connection ---
   useEffect(() => {
-    socketRef.current = io(SOCKET_URL);
+    socketRef.current = io(SOCKET_URL, {
+      query: {
+        key: SECRET_KEY,
+      },
+    });
     const socket = socketRef.current;
 
     socket.on('connect', () => {

@@ -12,20 +12,27 @@ from flask_socketio import SocketIO, emit
 from flask_cors import CORS
 from core.extractor import ProjectExtractor
 
+DEFAULT_HOST = "0.0.0.0"
+DEFAULT_PORT = "5172"
+CORS_ALLOWED_ORIGINS = "http://localhost:5173"
+
 # --- App Initialization ---
 app = Flask(__name__)
 # In a production environment, use a more secure and persistent secret key.
-app.config["SECRET_KEY"] = "your-very-secret-key!"
+app.config["SECRET_KEY"] = "code-scribe-secret-key"
 
 # --- CORS Configuration ---
 # Allow requests from the React frontend development server.
 # In production, you would change this to your frontend's domain.
-CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+CORS(app, resources={r"/*": {"origins": CORS_ALLOWED_ORIGINS}})
 
 # --- Socket.IO Initialization ---
-socketio = SocketIO(app, cors_allowed_origins="http://localhost:5173")
+socketio = SocketIO(app, cors_allowed_origins=CORS_ALLOWED_ORIGINS)
 
-# --- Socket.IO Event Handlers ---
+
+# ================================ #
+# --- Socket.IO Event Handlers --- #
+# ================================ #
 
 
 @socketio.on("connect")
@@ -97,4 +104,4 @@ if __name__ == "__main__":
   print("Starting CodeScribe Flask-SocketIO backend...")
   # Note: `debug=True` is for development. Use a production WSGI server
   # like Gunicorn or uWSGI for deployment.
-  socketio.run(app, debug=True, allow_unsafe_werkzeug=True)
+  socketio.run(app, host=DEFAULT_HOST, port=DEFAULT_PORT, debug=True, allow_unsafe_werkzeug=True)
