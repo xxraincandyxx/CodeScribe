@@ -1,5 +1,9 @@
 .resultsCard {
-  background-color: var(--card-bg);
+  background-color: var(
+    --card-bg
+  ); /* var(--card-bg) is rgba(36, 40, 59, 0.6) */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 12px;
   border: 1px solid var(--border-color);
   display: flex;

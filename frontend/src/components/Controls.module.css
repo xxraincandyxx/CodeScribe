@@ -1,5 +1,9 @@
 .controlsCard {
-  background-color: var(--card-bg);
+  background-color: var(
+    --card-bg
+  ); /* var(--card-bg) is rgba(36, 40, 59, 0.6) */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 1.5rem 2rem;
   border-radius: 12px;
   border: 1px solid var(--border-color);
@@ -177,4 +181,36 @@ textarea {
 .settingsStatus.error {
   color: var(--error-color);
   opacity: 1;
+}
+
+.backgroundToggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.toggleButtons {
+  display: flex;
+  background-color: var(--input-bg);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.toggleBtn {
+  background: transparent;
+  border: none;
+  color: var(--fg-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.toggleBtn.active {
+  background-color: var(--button-bg);
+  color: var(--button-text);
 }

@@ -50,7 +50,7 @@ function Stars(props) {
   );
 }
 
-export default function Background() {
+export default function StarfieldBackground() {
   return (
     <div
       style={{

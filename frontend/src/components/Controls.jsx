@@ -26,6 +26,8 @@ export default function Controls({
   onExtract,
   onSaveSettings,
   onLoadSettings,
+  backgroundType,
+  setBackgroundType,
 }) {
   const [settingsStatus, setSettingsStatus] = useState({
     message: '',
@@ -165,6 +167,29 @@ export default function Controls({
             onChange={(e) => setIgnoreComments(e.target.checked)}
           />
           <label htmlFor="ignore-comments">Omit comments</label>
+        </div>
+      </div>
+
+      {/* Background Toggle Section */}
+      <div className={styles.backgroundToggle}>
+        <label>Background Effect:</label>
+        <div className={styles.toggleButtons}>
+          <button
+            className={`${styles.toggleBtn} ${
+              backgroundType === 'stars' ? styles.active : ''
+            }`}
+            onClick={() => setBackgroundType('stars')}
+          >
+            Starfield
+          </button>
+          <button
+            className={`${styles.toggleBtn} ${
+              backgroundType === 'particles' ? styles.active : ''
+            }`}
+            onClick={() => setBackgroundType('particles')}
+          >
+            Particles
+          </button>
         </div>
       </div>
 

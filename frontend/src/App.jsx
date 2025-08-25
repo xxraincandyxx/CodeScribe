@@ -4,8 +4,11 @@ import styles from './App.module.css';
 import './App.scss';
 import Controls from './components/Controls.jsx';
 import Results from './components/Results.jsx';
-import Background from './components/Background.jsx';
-import Layout from './layouts';
+// Backgrounds
+import Background from './components/StarfieldBackground.jsx';
+import ParticleSystemBackground from './components/ParticleSystemBackground.jsx';
+
+// import Layout from './layouts';
 
 const SOCKET_URL = 'http://localhost:5000';
 const SETTINGS_KEY = 'codeScribeSettings_v2';
@@ -32,7 +35,7 @@ __pycache__/
 
 function App() {
   // --- Test for Background Effect ---
-  return <Layout />;
+  // return <Layout />;
 
   // --- State Management ---
   const [projectPath, setProjectPath] = useState('');
@@ -47,7 +50,10 @@ function App() {
     message: 'Ready to extract.',
     type: 'info',
   });
+
   const [isWorking, setIsWorking] = useState(false);
+  // State for managing the background type
+  const [backgroundType, setBackgroundType] = useState('particles'); // 'stars' or 'particles'
 
   const socketRef = useRef(null);
 
@@ -91,6 +97,7 @@ function App() {
   }, []);
 
   // --- Settings Persistence ---
+  // Modify save/load to include the backgroundType
   const saveSettings = useCallback(() => {
     try {
       const settings = {
@@ -100,6 +107,7 @@ function App() {
         maxFileSize,
         ignoreComments,
         externalFiles,
+        backgroundType,
       };
       localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
       return { success: true, message: 'Settings saved!' };
@@ -114,7 +122,8 @@ function App() {
     maxFileSize,
     ignoreComments,
     externalFiles,
-  ]);
+    backgroundType,
+  ]); // <-- ADD DEPENDENCY
 
   const loadSettings = useCallback(() => {
     try {
@@ -127,6 +136,7 @@ function App() {
         setMaxFileSize(settings.maxFileSize || '1024');
         setIgnoreComments(settings.ignoreComments || false);
         setExternalFiles(settings.externalFiles || []);
+        setBackgroundType(settings.backgroundType || 'stars'); // <-- ADD THIS
         return { success: true, message: 'Settings loaded!' };
       }
       return { success: false, message: 'No saved settings found.' };
@@ -167,7 +177,13 @@ function App() {
 
   return (
     <>
-      <Background />
+      {/* Conditionally render the selected background */}
+      {backgroundType === 'stars' ? (
+        <StarfieldBackground />
+      ) : (
+        <ParticleSystemBackground />
+      )}
+
       <div className={styles.container}>
         <header className={styles.header}>
           <h1>CodeScribe</h1>
@@ -191,6 +207,9 @@ function App() {
             onExtract={handleExtract}
             onSaveSettings={saveSettings}
             onLoadSettings={loadSettings}
+            // Pass background state and setter
+            backgroundType={backgroundType}
+            setBackgroundType={setBackgroundType}
           />
           <Results status={status} isWorking={isWorking} markdown={markdown} />
         </main>
