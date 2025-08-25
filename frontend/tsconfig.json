@@ -21,7 +21,7 @@
       "@components/*": ["src/components/*"],
       "@constant/*": ["src/constant/*"],
       "@declare/*": ["src/declare/*"],
-      "@THREE/*": ["src/THREE/*"]
+      "@THREE/*": ["src/legacy-three/*"]
     }
   },
   "include": ["src"],

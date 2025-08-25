@@ -1,0 +1,44 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.canvasWrapper {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.controlsList {
+  position: absolute;
+  top: 25px;
+  left: 20px;
+  list-style: inside;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: rgba(36, 40, 59, 0.7);
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(5px);
+}
+
+.controlsList li {
+  color: var(--fg-color);
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.controlsList li:hover {
+  background-color: var(--button-secondary-bg);
+}

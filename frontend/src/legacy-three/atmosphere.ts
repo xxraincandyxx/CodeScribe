@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import g from '@/assets/images/gradient.png'
-import { addonsBasic } from '../declare/THREE/addons'
+import { addonsBasic } from '../declare/legacy-three/addons'
 
 export interface AtmosphereParticleProps {
   longestDistance: number

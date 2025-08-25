@@ -1,30 +1,39 @@
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
-import { MMDLoader } from 'three/examples/jsm/loaders/MMDLoader'
-import { PCDLoader } from 'three/examples/jsm/loaders/PCDLoader'
-import { PDBLoader } from 'three/examples/jsm/loaders/PDBLoader'
-import { PRWMLoader } from 'three/examples/jsm/loaders/PRWMLoader'
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader'
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { MMDLoader } from 'three/examples/jsm/loaders/MMDLoader';
+import { PCDLoader } from 'three/examples/jsm/loaders/PCDLoader';
+import { PDBLoader } from 'three/examples/jsm/loaders/PDBLoader';
+import { PRWMLoader } from 'three/examples/jsm/loaders/PRWMLoader';
+import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 
-import type { Tween as TweenProps } from '@tweenjs/tween.js'
+import type { Tween as TweenProps } from '@tweenjs/tween.js';
 
-export type ALL_LOADER = OBJLoader | FBXLoader | DRACOLoader | GLTFLoader | MMDLoader | PCDLoader | PDBLoader | PRWMLoader | SVGLoader
+export type ALL_LOADER =
+  | OBJLoader
+  | FBXLoader
+  | DRACOLoader
+  | GLTFLoader
+  | MMDLoader
+  | PCDLoader
+  | PDBLoader
+  | PRWMLoader
+  | SVGLoader;
 
 export interface TWEEN_POINT {
-  x: number
-  y: number
-  z: number
+  x: number;
+  y: number;
+  z: number;
   /** tween 实例 */
-  tweenctx?: TweenProps<TWEEN_POINT>
+  tweenctx?: TweenProps<TWEEN_POINT>;
   /** 粒子是否处于模型切换中的状态 */
-  isPlaying?: boolean
+  isPlaying?: boolean;
 }
 
 export interface CustomLoader {
   /** 加载器实例 */
-  loaderInstance: ALL_LOADER
+  loaderInstance: ALL_LOADER;
   /**
    * 完成加载的回调函数
    *
@@ -32,24 +41,24 @@ export interface CustomLoader {
    *
    * 你需要返回一个 `BufferGeometry` 对象，他记录着你想展示的模型的所有顶点信息
    */
-  load: (...args: any) => THREE.BufferGeometry
+  load: (...args: any) => THREE.BufferGeometry;
 }
 
 export interface ParticleModelProps {
   /** 模型名字，请确保是唯一名字 */
-  name: string
+  name: string;
   /**
    * 自定义 Geometry，传入后则会取消从指定路径加载的功能
    *
    * **通过这种方式设置的几何体不会通过内置的粒子去重方法进行处理**，可以引入 `src/utils` 下的去重方法自行处理
    */
-  geometry?: THREE.BufferGeometry
+  geometry?: THREE.BufferGeometry;
   /**
    * 模型路径，相对当前文件路径引入，如果传入了自定义 geometry 可以省略
    *
    * 可以查看这篇指南引入：https://vitejs.cn/vite3-cn/guide/assets.html#new-url-url-import-meta-url
    */
-  path?: string
+  path?: string;
   /**
    * 自定义加载器
    * @example
@@ -70,7 +79,7 @@ export interface ParticleModelProps {
    *   }
    * }
    */
-  loader?: CustomLoader
+  loader?: CustomLoader;
   /**
    * 是否需要进行粒子去重
    *
@@ -79,18 +88,18 @@ export interface ParticleModelProps {
    * 本质上是对 `BufferGeometry` 内的数组进行粒子位置去重，如果自定义模型展示不正常可以考虑关闭该功能
    * @default true
    */
-  NeedRemoveDuplicateParticle?: boolean
+  NeedRemoveDuplicateParticle?: boolean;
   /**
    * 模型加载完成后的回调
    *
    * @param {THREE.BufferGeometry} Geometry 加载完成后的几何体
    *  */
-  onLoadComplete?: (Geometry: THREE.BufferGeometry) => void
+  onLoadComplete?: (Geometry: THREE.BufferGeometry) => void;
   /**
    * 开始进入该模型时触发的回调
    * @param {THREE.Points} PointGeometry 表演粒子实例
    *  */
-  onEnterStart?: (PointGeometry: THREE.Points) => void
+  onEnterStart?: (PointGeometry: THREE.Points) => void;
   /**
    * 模型切换完成时触发的回调
    *
@@ -98,7 +107,7 @@ export interface ParticleModelProps {
    *
    * @param {THREE.Points} PointGeometry 表演粒子实例
    */
-  onEnterEnd?: (PointGeometry: THREE.Points) => void
+  onEnterEnd?: (PointGeometry: THREE.Points) => void;
   /**
    * 动画帧更新时的回调
    *
@@ -110,5 +119,9 @@ export interface ParticleModelProps {
    * @returns 一个 `boolean` 值或不返回任何内容，如果返回 `true` 则会帮你自动更新表演粒子的几何体上的所有 `attribute` 属性，详情见：
    *  https://threejs.org/docs/index.html#api/zh/core/BufferAttribute.needsUpdate
    */
-  onAnimationFrameUpdate?: (PerfromPoint: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>, TweenList: TWEEN_POINT[], Geometry: THREE.BufferGeometry) => unknown
+  onAnimationFrameUpdate?: (
+    PerfromPoint: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial>,
+    TweenList: TWEEN_POINT[],
+    Geometry: THREE.BufferGeometry
+  ) => unknown;
 }

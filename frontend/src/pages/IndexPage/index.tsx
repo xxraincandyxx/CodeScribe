@@ -1,13 +1,13 @@
 import * as React from 'react'
 import Styles from './index.module.scss'
-import ParticleSystem from '@/THREE'
+import ParticleSystem from '@/legacy-three/ParticleSystem'
 import { useEffect, useRef } from 'react'
-import AtmosphereParticle from '@/THREE/atmosphere'
-import { ParticleModelProps } from '@/declare/THREE'
+import AtmosphereParticle from '@/legacy-three/atmosphere'
+import { ParticleModelProps } from '@/declare/legacy-three'
 import Tween from '@tweenjs/tween.js'
-import GetFlatGeometry from '@/utils/GetFlatGeometry'
+import GetFlatGeometry from '@/legacy-three/utils/GetFlatGeometry'
 import { BufferGeometry, Float32BufferAttribute } from 'three'
-import VerticesDuplicateRemove from '@/utils/VerticesDuplicateRemove'
+import VerticesDuplicateRemove from '@/legacy-three/utils/VerticesDuplicateRemove'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 
 function IndexPage() {

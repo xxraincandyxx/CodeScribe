@@ -4,9 +4,14 @@ import styles from './App.module.css';
 import './App.scss';
 import Controls from './components/Controls.jsx';
 import Results from './components/Results.jsx';
-// Backgrounds
-import StarfieldBackground from './components/StarfieldBackground.jsx';
-import ParticleSystemBackground from './components/ParticleSystemBackground.jsx';
+
+// Remove the old background imports
+// import StarfieldBackground from './components/StarfieldBackground';
+// import ParticleSystemBackground from './components/ParticleSystemBackground';
+
+// Import our new legacy wrapper and the starfield
+import StarfieldBackground from './components/StarfieldBackground';
+import LegacyParticleBackground from './components/LegacyParticleBackground';
 
 // import Layout from './layouts';
 
@@ -54,7 +59,7 @@ function App() {
 
   const [isWorking, setIsWorking] = useState(false);
   // State for managing the background type
-  const [backgroundType, setBackgroundType] = useState('stars'); // 'stars' or 'particles'
+  const [backgroundType, setBackgroundType] = useState('particles'); // 'stars' or 'particles'
 
   const socketRef = useRef(null);
 
@@ -141,7 +146,7 @@ function App() {
         setMaxFileSize(settings.maxFileSize || '1024');
         setIgnoreComments(settings.ignoreComments || false);
         setExternalFiles(settings.externalFiles || []);
-        setBackgroundType(settings.backgroundType || 'stars'); // <-- ADD THIS
+        setBackgroundType(settings.backgroundType || 'stars');
         return { success: true, message: 'Settings loaded!' };
       }
       return { success: false, message: 'No saved settings found.' };
@@ -186,7 +191,18 @@ function App() {
       {backgroundType === 'stars' ? (
         <StarfieldBackground />
       ) : (
-        <ParticleSystemBackground />
+        <LegacyParticleBackground />
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {/* Conditionally render the selected background */}
+      {backgroundType === 'stars' ? (
+        <StarfieldBackground />
+      ) : (
+        <LegacyParticleBackground />
       )}
 
       <div className={styles.container}>
