@@ -180,7 +180,7 @@ class ParticleSystem {
       // 在 css 中设置背景色透明显示渐变色
       alpha: true,
       // 开启抗锯齿
-      antialias: true,
+      antialias: false,
     });
     // 自动清理，解决 bloomPass 效果器冲突
     this.renderer.autoClear = false;
