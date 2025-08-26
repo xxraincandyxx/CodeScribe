@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "name": "OSX/Linux",
+      "includePath": [
+        "${workspaceFolder}/src/ori/**",
+        "${HOME}/Dev/lib/libtorch/include",
+        "${HOME}/Dev/lib/libtorch/include/torch/csrc/api/include",
+        "${HOME}/miniconda3/envs/torch/lib/python3.12/site-packages/pybind11/include"
+      ],
+      "defines": [],
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "c17",
+      "cppStandard": "gnu++17",
+      "intelliSenseMode": "linux-gcc-x64"
+    }
+  ],
+  "version": 4
+}

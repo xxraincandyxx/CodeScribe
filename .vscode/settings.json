@@ -1,0 +1,169 @@
+{
+  // global style
+  "editor.tabSize": 2,
+  "editor.indentSize": "tabSize",
+  "prettier.tabWidth": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false, // Prevents VS Code from auto-detecting
+  "editor.formatOnSave": true,
+  // html style
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  // cpp path configuration
+  "C_Cpp.default.includePath": [
+  ],
+  // terminal session
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  // python path configuration
+  "python.analysis.stubPath": "${workspaceFolder}/stub",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/src",
+    "${workspaceFolder}/build",
+  ],
+  "python.autoComplete.extraPaths": [
+    "${workspaceFolder}/src/eva",
+    "${workspaceFolder}/src/eva/lib"
+  ],
+  // Python formatter configuration
+  // Force Ruff for all file types (optional)
+  "editor.defaultFormatter": "charliermarsh.ruff",
+  // Disable other formatters (e.g., Black, autopep8)
+  "python.formatting.provider": "none",
+  // Custom Ruff settings (if not using pyproject.toml)
+  "ruff.path": ["./pyproject.toml"],
+  "ruff.importStrategy": "fromEnvironment",
+  /* YAPF FROMATTER CACHE
+   "python.formatting.provider": "yapf",
+   "python.formatting.yapfArgs": [
+     "--style=pyproject.toml"
+   ],
+  */
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "[cpp]": {
+  "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+  "editor.formatOnSave": true
+  },
+  // spell checkers
+  "cSpell.ignoreWords": [
+    "mypy",
+    "pybind",
+    "pytest",
+    "pycache",
+    "levelname",
+    "pyproject",
+
+    // C/C++ Style
+    "CINC",
+    "CSRC",
+    "CRUN",
+    "CTST",
+
+    // torch Syle
+    "unsqueeze",
+    "unsqueezed",
+
+    // DL
+    "CUDA",
+    "layernorm",
+    "hyperparamerter",
+    "hyperparamerters",
+
+    // datasets names
+    "imagenet",
+
+    // cv2
+    "imshow",
+    "imread",
+
+    // plotly
+    "plotly",
+    "showlegend",
+
+    // numpy
+    "ndarray",
+
+    // frontend
+    "onclick",
+    "stylesheet"
+  ],
+  "makefile.configureOnOpen": false,
+  "[django-html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.ejs": "html",
+    "array": "cpp",
+    "atomic": "cpp",
+    "bit": "cpp",
+    "cctype": "cpp",
+    "charconv": "cpp",
+    "chrono": "cpp",
+    "clocale": "cpp",
+    "cmath": "cpp",
+    "codecvt": "cpp",
+    "compare": "cpp",
+    "concepts": "cpp",
+    "condition_variable": "cpp",
+    "cstdarg": "cpp",
+    "cstddef": "cpp",
+    "cstdint": "cpp",
+    "cstdio": "cpp",
+    "cstdlib": "cpp",
+    "cstring": "cpp",
+    "ctime": "cpp",
+    "cwchar": "cpp",
+    "cwctype": "cpp",
+    "deque": "cpp",
+    "forward_list": "cpp",
+    "list": "cpp",
+    "map": "cpp",
+    "set": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "vector": "cpp",
+    "exception": "cpp",
+    "algorithm": "cpp",
+    "functional": "cpp",
+    "iterator": "cpp",
+    "memory": "cpp",
+    "memory_resource": "cpp",
+    "numeric": "cpp",
+    "optional": "cpp",
+    "random": "cpp",
+    "ratio": "cpp",
+    "string_view": "cpp",
+    "system_error": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "utility": "cpp",
+    "format": "cpp",
+    "fstream": "cpp",
+    "initializer_list": "cpp",
+    "iomanip": "cpp",
+    "iosfwd": "cpp",
+    "iostream": "cpp",
+    "istream": "cpp",
+    "limits": "cpp",
+    "mutex": "cpp",
+    "new": "cpp",
+    "numbers": "cpp",
+    "ostream": "cpp",
+    "ranges": "cpp",
+    "semaphore": "cpp",
+    "span": "cpp",
+    "sstream": "cpp",
+    "stdexcept": "cpp",
+    "stop_token": "cpp",
+    "streambuf": "cpp",
+    "thread": "cpp",
+    "cinttypes": "cpp",
+    "typeindex": "cpp",
+    "typeinfo": "cpp",
+    "valarray": "cpp",
+    "variant": "cpp"
+  }
+}
