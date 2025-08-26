@@ -2,8 +2,8 @@ import * as THREE from 'three'
 import g from '@/assets/images/gradient.png'
 
 export default function GetFlatGeometry() {
-  const AMOUNTX = 50
-  const AMOUNTY = 50
+  const AMOUNTX = 100
+  const AMOUNTY = 100
   const SEPARATION = 100
   const numParticles = AMOUNTX * AMOUNTY
   const vertices = new Float32Array(numParticles * 3)

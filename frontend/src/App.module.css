@@ -1,7 +1,7 @@
 .container {
   pointer-events: none;
   position: relative;
-  z-index: 1;
+  z-index: 3;
   width: 100%;
   height: 100%;
   padding: 2rem;
@@ -9,6 +9,12 @@
   flex-direction: column;
   gap: 2rem;
   overflow: auto;
+}
+
+.header,
+.main {
+  /* Re-enable pointer events for interactive elements */
+  pointer-events: auto;
 }
 
 .header {
@@ -33,6 +39,7 @@
 .main {
   display: grid;
   grid-template-columns: minmax(400px, 1fr) 2fr;
+  z-index: 3;
   gap: 2rem;
   flex-grow: 1;
   min-height: 0; /* Important for children to be able to scroll */

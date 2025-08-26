@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { io } from 'socket.io-client';
 import styles from './App.module.css';
-import './App.scss';
+// import './App.scss';
 import Controls from './components/Controls.jsx';
 import Results from './components/Results.jsx';
 

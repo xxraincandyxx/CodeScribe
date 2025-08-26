@@ -15,7 +15,10 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { throttle } from 'lodash';
 
 import g from '@/assets/images/gradient.png';
-import { ParticleModelProps, TWEEN_POINT } from '@/legacy-three/declare/legacy-three';
+import {
+  ParticleModelProps,
+  TWEEN_POINT,
+} from '@/legacy-three/declare/legacy-three';
 import VerticesDuplicateRemove from '@/legacy-three/utils/VerticesDuplicateRemove.js';
 import BuiltinShaderAttributeName from '@/legacy-three/constant/legacy-three/BuiltinShaderAttributeName';
 import { addonsBasic } from '@/legacy-three/declare/legacy-three/addons';
@@ -164,7 +167,8 @@ class ParticleSystem {
 
     // 坐标轴辅助器
     const axesHelper = new THREE.AxesHelper(500);
-    this.scene.add(axesHelper);
+    // this.scene.add(axesHelper);
+
     // addons 添加
     if (this.addons != null) {
       this.addons.forEach((val) => {
@@ -176,7 +180,7 @@ class ParticleSystem {
       // 在 css 中设置背景色透明显示渐变色
       alpha: true,
       // 开启抗锯齿
-      // antialias: true,
+      antialias: true,
     });
     // 自动清理，解决 bloomPass 效果器冲突
     this.renderer.autoClear = false;

@@ -16,6 +16,7 @@
 
 .controlsList {
   position: absolute;
+  z-index: 3;
   top: 25px;
   left: 20px;
   list-style: inside;
@@ -29,6 +30,8 @@
   border-radius: 8px;
   border: 1px solid var(--border-color);
   backdrop-filter: blur(5px);
+  /* Debug */
+  display: none;
 }
 
 .controlsList li {

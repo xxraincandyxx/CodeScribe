@@ -38,7 +38,7 @@ export default function LegacyParticleBackground() {
 
   const Atomsphere1 = new AtmosphereParticle({
     longestDistance: al,
-    particleSum: 500,
+    particleSum: 1000,
     renderUpdate: (Point) => {
       Point.rotation.x -= TurnBasicNum.firefly;
     },
@@ -52,10 +52,9 @@ export default function LegacyParticleBackground() {
       tween1.start();
     },
   });
-  // ... (Atmosphere2 and Atmosphere3 are identical to your code)
   const Atomsphere2 = new AtmosphereParticle({
     longestDistance: al,
-    particleSum: 500,
+    particleSum: 1000,
     renderUpdate: (Point) => {
       Point.rotation.y += TurnBasicNum.firefly;
     },
@@ -66,7 +65,7 @@ export default function LegacyParticleBackground() {
   });
   const Atomsphere3 = new AtmosphereParticle({
     longestDistance: al,
-    particleSum: 500,
+    particleSum: 1000,
     renderUpdate: (Point) => {
       Point.rotation.z += TurnBasicNum.firefly / 2;
     },
